@@ -1,0 +1,17 @@
+{
+	"pid" : -1,
+	"pname" : "String",
+	[
+		{
+			"timestamp" : "datetime",
+			"cpu" : 0.0,
+			"mem" : 0.0
+		},
+		{
+			"timestamp" : "datetime",
+			"cpu" : 0.0,
+			"mem" : 0.0
+		}
+	]
+}
+
