@@ -35,7 +35,7 @@ public class Main{
 				break;
 			case 2 : // Load a custom configuration file previoulsy saved
 				File confs = new File("../config");
-				String [] filenames = f.list();
+				String [] filenames = confs.list();
 				System.out.printf("Wich custom configuration file would you like to load?\n");
 				int i = 0;
 				for(String file : filenames){
@@ -71,7 +71,7 @@ public class Main{
 				agent.setConfig(new_config);
 				System.out.printf("Do you whish to save this new configuration?\ny -> yes\nn -> no\n");
 				String opt = config_scanner.next();
-				if(opt = "y"){
+				if(opt == "y"){
 					
 				}
 				break;
