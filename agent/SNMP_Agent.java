@@ -1,5 +1,6 @@
 public class SNMP_Agent{
 	private String ip;
+	private String mask;
 	private int port;
 	private int polling;
 
@@ -10,6 +11,7 @@ public class SNMP_Agent{
 	}
 	public void setConfig(Config conf){
 		ip = conf.getIP();
+		mask = conf.getMask();
 		port = conf.getPort();
 		polling = conf.getPolling();
 	}
