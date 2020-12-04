@@ -34,6 +34,7 @@ public class Main{
 				agent.setConfig(default_config);
 				break;
 			case 2 : // Load a custom configuration file previoulsy saved
+				Config custom_config = new Config();
 				File confs = new File("../config");
 				String [] filenames = confs.list();
 				System.out.printf("Wich custom configuration file would you like to load?\n");
@@ -43,6 +44,17 @@ public class Main{
 					System.out.printf(i + " -> " + file);
 				}
 				int filenumber = config_scanner.nextInt();
+				String custom_file = filenames[filenumber-1];
+				JSONArray cust = (JSONArray) parser.parse(new FileReader("../config/" + custom_file + ".json"));
+				for(Object o : cust){
+					JSONObject conf = (JSONObject) o;
+					String custom_name = (String) conf.get("name");
+					String custom_ip = (String) conf.get("ip");
+					String custom_mask = (String) conf.get("mask");
+					int custom_port = (int) conf.get("port");
+					int custom_polling = (int) conf.get("polling");
+
+					custom_config.setConfig(custom_name, custom_ip, custom_mask, custom_port, custom_polling);
 				break;
 			case 3 : // Load a new Configuration and possibly save it onto a Json file
 				System.out.printf("What is your desired configuration name?\n");
@@ -72,7 +84,13 @@ public class Main{
 				System.out.printf("Do you whish to save this new configuration?\ny -> yes\nn -> no\n");
 				String opt = config_scanner.next();
 				if(opt == "y"){
-					
+					ObjectMapper new_json_config = new ObjectMapper();
+					try{
+						mapper.writeValue(new File(new_config.getName() + ".json"), new_config);
+					}
+					catch (Exception e){
+						e.printStackTrace();
+					}
 				}
 				break;
 			default:
