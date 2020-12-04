@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.File;
+import java.lang.Object;
 import java.util.Iterator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
