@@ -1,12 +1,11 @@
 package agent.snmp;
 
-import java.time.LocalDateTime;
-
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.util.Scanner;
+import java.time.LocalDateTime;
+
 
 public class Snapshot {
     LocalDateTime timestamp;
@@ -69,7 +68,7 @@ public class Snapshot {
         obj.put("timestamp", timestamp.toString());
         obj.put("cpu", cpu);
         obj.put("mem", mem);
-        return obj.toJSONString();
+        return obj.toString();
 
     }
 }

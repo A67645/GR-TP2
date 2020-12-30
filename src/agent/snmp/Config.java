@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -95,10 +95,7 @@ public class Config{
 			port = (int) jsonObject.get("port");
 			polling = (int) jsonObject.get("polling");
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		catch (ParseException e) {
+		catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
@@ -122,7 +119,7 @@ public class Config{
 		obj.put("polling", polling);
 
 		try (FileWriter file = new FileWriter("../../../data/config/" + name + ".json")) {
-			file.write(obj.toJSONString());
+			file.write(obj.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -133,7 +130,7 @@ public class Config{
 		Scanner config_scanner = new Scanner(System.in);
 		int config_opt = config_scanner.nextInt();
 
-		System.out.printf("...Wellcome to SNMP JAVA MONITOR!...\nWich configuration would you like to use?\n1 -> Default\n2 -> new\n3 -> new\n");
+		System.out.println("...Wellcome to SNMP JAVA MONITOR!...\nWich configuration would you like to use?\n1 -> Default\n2 -> new\n3 -> new");
 
 		switch (config_opt) {
 			case 1 : // Load default configuration file
@@ -142,27 +139,29 @@ public class Config{
 			case 2 : // Load a custom configuration file previoulsy saved
 				File confs = new File("../../../data/config/");
 				String [] filenames = confs.list();
-				System.out.printf("Wich custom configuration file would you like to load?\n");
-				int i = 0;
-				for(String file : filenames){
-					i++;
-					System.out.printf(i + " -> " + file);
+				if(filenames != null) {
+					System.out.println("Wich custom configuration file would you like to load?");
+					int i = 0;
+					for (String file : filenames) {
+						i++;
+						System.out.println(i + " -> " + file);
+					}
+					int filenumber = config_scanner.nextInt();
+					String custom_file = filenames[filenumber - 1];
+					String filename = "../../../data/config/" + custom_file + ".json";
+					loadConfig(filename);
 				}
-				int filenumber = config_scanner.nextInt();
-				String custom_file = filenames[filenumber-1];
-				String filename = "../../../data/config/" + custom_file + ".json";
-				loadConfig(filename);
 				break;
 			case 3 : // Load a new Configuration and possibly save it onto a Json file
-				System.out.printf("What is your desired configuration name?\n");
+				System.out.println("What is your desired configuration name?");
 				String new_name = config_scanner.next();
-				System.out.printf("What is your IP address?\n");
+				System.out.println("What is your IP address?");
 				String new_ip = config_scanner.next();
-				System.out.printf("What is your subnet mask?\n");
+				System.out.println("What is your subnet mask?");
 				String new_mask = config_scanner.next();
-				System.out.printf("What is your port?\n");
+				System.out.println("What is your port?\n");
 				int new_port = config_scanner.nextInt();
-				System.out.printf("Would you desire slow, medium or fast polling?\n Select 1 for slow, 2 for medium or 3 for fast.\n");
+				System.out.println("Would you desire slow, medium or fast polling?\n Select 1 for slow, 2 for medium or 3 for fast.");
 				int new_polling = config_scanner.nextInt();
 				int new_polling_sec;
 				switch (new_polling){
@@ -178,13 +177,13 @@ public class Config{
 				}
 
 				setConfig(new_name, new_ip, new_mask, new_port, new_polling_sec);
-				System.out.printf("Do you whish to save this new configuration?\ny -> yes\nn -> no\n");
+				System.out.println("Do you whish to save this new configuration?\ny -> yes\nn -> no");
 				String opt = config_scanner.next();
 				if(opt.equals("y")){
 					saveConfig();
 				}
 			default:
-				System.out.printf("Invalid Option!\n");
+				System.out.println("Invalid Option!");
 				break;
 		}
 	}
