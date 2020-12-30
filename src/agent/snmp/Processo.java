@@ -1,14 +1,11 @@
 package agent.snmp;
 
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.ArrayList;
 
@@ -46,49 +43,47 @@ public class Processo {
 
     }
 
-    public void SaveProcesso(String processo_name){
-        JSONObject obj = new JSONObject();
+    public void addSnapshot(Snapshot s){
+        usages.add(s);
+    }
 
-        obj.put("pname", pname);
-        obj.put("pid", pid);
+    public void saveProcesso(){
+        ObjectMapper mapper = new ObjectMapper();
 
-        JSONArray list = new JSONArray();
-        for(Snapshot s : usages){
-            list.put(s.toJSONString());
+        try{
+            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + pname + ".json");
+            Processo p = new Processo(pname, pid, usages);
+            mapper.writeValue(json, p);
         }
-
-        obj.put("usages", list);
-
-        try (FileWriter file = new FileWriter("../../../data/logs/" + processo_name + ".json")) {
-            file.write(obj.toString());
+        catch (JsonGenerationException ge) {
+            ge.printStackTrace();
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (JsonMappingException me) {
+            me.printStackTrace();
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 
-    public void getProcesso(String processo_name){
-        JSONParser parser = new JSONParser();
+    public void loadProcesso(String processo_name){
+        ObjectMapper mapper = new ObjectMapper();
 
-        try (Reader reader = new FileReader("../../../data/logs/" + processo_name + ".json")){
-
-            JSONObject jsonObject = (JSONObject) parser.parse(reader);
-
-            pname = (String) jsonObject.get("name");
-            pid = (int) jsonObject.get("pid");
-
-            JSONArray jsonArray = (JSONArray) jsonObject.get("usages");
-            usages = new ArrayList<>();
-            Snapshot s = new Snapshot();
-
-            for(Object o : jsonArray){
-
-                s.fromJSONString(o.toString());
-                usages.add(new Snapshot(s));
-            }
+        try{
+            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + processo_name + ".json");
+            Processo p = mapper.readValue(json, Processo.class);
+            pname = p.getPName();
+            pid = p.getPID();
+            usages = new ArrayList<Snapshot>(usages);
         }
-        catch (IOException | ParseException e) {
-            e.printStackTrace();
+        catch (JsonGenerationException ge) {
+            ge.printStackTrace();
+        }
+        catch (JsonMappingException me) {
+            me.printStackTrace();
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 
@@ -96,7 +91,7 @@ public class Processo {
         double sum = 0.0d;
 
         for(Snapshot s : usages){
-            if(begin.isBefore(s.getTimestamp()) && end.isAfter(s.getTimestamp())){
+            if(begin.isBefore(LocalDateTime.parse(s.getTimestamp())) && end.isAfter(LocalDateTime.parse(s.getTimestamp()))){
                 sum += s.getCPU();
             }
         }
@@ -108,16 +103,11 @@ public class Processo {
         double sum = 0.0d;
 
         for(Snapshot s : usages){
-            if(begin.isBefore(s.getTimestamp()) && end.isAfter(s.getTimestamp())){
+            if(begin.isBefore(LocalDateTime.parse(s.getTimestamp())) && end.isAfter(LocalDateTime.parse(s.getTimestamp()))){
                 sum += s.getCPU();
             }
         }
 
         return sum/(usages.size());
-    }
-
-    public LocalDateTime getLast(){
-        int last_index = usages.size() - 1;
-        return usages.get(last_index).getTimestamp();
     }
 }

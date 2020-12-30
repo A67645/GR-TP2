@@ -1,7 +1,7 @@
 import agent.snmp.*;
 
 public class Main{
-	public void main(){
+	public static void main(String [] args){
 
 		SNMP_Agent agent =  new SNMP_Agent();
 

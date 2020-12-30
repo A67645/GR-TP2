@@ -1,24 +1,20 @@
 package agent.snmp;
 
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.time.LocalDateTime;
 
 
 public class Snapshot {
-    LocalDateTime timestamp;
+    String timestamp;
     private double cpu;
     private double mem;
 
     public Snapshot (){
-        timestamp = LocalDateTime.now();
+        timestamp = LocalDateTime.now().toString();
         cpu = 0.0d;
         mem = 0.0d;
     }
 
-    public Snapshot(LocalDateTime new_dt, double new_cpu, double new_mem){
+    public Snapshot(String new_dt, double new_cpu, double new_mem){
         timestamp = new_dt;
         cpu = new_cpu;
         mem = new_mem;
@@ -30,7 +26,7 @@ public class Snapshot {
         mem = s.getMEM();
     }
 
-    public LocalDateTime getTimestamp(){
+    public String getTimestamp(){
         return timestamp;
     }
 
@@ -42,33 +38,8 @@ public class Snapshot {
         return mem;
     }
 
-    public void fromJSONString(String jsonString){
-        JSONParser parser = new JSONParser();
+    public String toString(){
 
-        try {
-
-            JSONObject jsonObject = (JSONObject) parser.parse(jsonString);
-
-            String ldt = (String) jsonObject.get("timestamp");
-            timestamp = LocalDateTime.parse(ldt);
-
-
-            cpu = (double) jsonObject.get("cpu");
-
-            mem = (double) jsonObject.get("mem");
-        }
-        catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String toJSONString(){
-        JSONObject obj = new JSONObject();
-
-        obj.put("timestamp", timestamp.toString());
-        obj.put("cpu", cpu);
-        obj.put("mem", mem);
-        return obj.toString();
-
+        return "Time: " + timestamp + " CPU: " + cpu + " MEM: " + mem;
     }
 }

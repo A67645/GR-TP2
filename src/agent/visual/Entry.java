@@ -1,5 +1,7 @@
 package agent.visual;
 
+import java.time.LocalDateTime;
+
 public class Entry {
     private String pname;
     private int pid;

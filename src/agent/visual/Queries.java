@@ -40,7 +40,7 @@ public class Queries {
             if(filenames != null) {
                 for (String file : filenames) {
                     Processo p = new Processo();
-                    p.getProcesso(file + ".json");
+                    p.loadProcesso(file + ".json");
                     Entry e = new Entry(p.getPName(), p.getPID(), p.averageCPU(begin, end), p.averageMEM(begin, end));
                     if (entries_aux[indexOfLesserCPU(entries_aux)].getCPU() <= e.getCPU()) {
                         entries_aux[indexOfLesserCPU(entries_aux)] = new Entry(e);
@@ -62,7 +62,7 @@ public class Queries {
             if(filenames != null) {
                 for (String file : filenames) {
                     Processo p = new Processo();
-                    p.getProcesso(file + ".json");
+                    p.loadProcesso(file + ".json");
                     Entry e = new Entry(p.getPName(), p.getPID(), p.averageMEM(begin, end), p.averageMEM(begin, end));
                     if (entries_aux[indexOfLesserCPU(entries_aux)].getMEM() <= e.getMEM()) {
                         entries_aux[indexOfLesserCPU(entries_aux)] = new Entry(e);
@@ -83,7 +83,7 @@ public class Queries {
             if(filenames != null) {
                 for (String file : filenames) {
                     Processo p = new Processo();
-                    p.getProcesso(file + ".json");
+                    p.loadProcesso(file + ".json");
                     Entry e = new Entry(p.getPName(), p.getPID(), p.averageMEM(begin, end), p.averageMEM(begin, end));
                     if (e.getCPU() == 0.0d) {
                         entries.add(e);
@@ -103,7 +103,7 @@ public class Queries {
             if(filenames != null) {
                 for (String file : filenames) {
                     Processo p = new Processo();
-                    p.getProcesso(file + ".json");
+                    p.loadProcesso(file + ".json");
                     Entry e = new Entry(p.getPName(), p.getPID(), p.averageMEM(begin, end), p.averageMEM(begin, end));
                     if (e.getMEM() == 0.0d) {
                         entries.add(e);
