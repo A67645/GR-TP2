@@ -2,8 +2,8 @@
   <library name="com.guicedee.services:jfreechart:1.0.20.1" type="repository">
     <properties maven-id="com.guicedee.services:jfreechart:1.0.20.1" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/guicedee/services/jfreechart/1.0.20.1/jfreechart-1.0.20.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/com/guicedee/services/jakarta.servlet-api/1.0.20.1/jakarta.servlet-api-1.0.20.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.0.20.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jakarta.servlet-api-1.0.20.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
