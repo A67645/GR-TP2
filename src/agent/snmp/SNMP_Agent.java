@@ -30,7 +30,7 @@ public class SNMP_Agent{
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
-			File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\" + config_filename);
+			File json = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/config/"+ config_filename);
 			conf = mapper.readValue(json, Config.class);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -44,7 +44,7 @@ public class SNMP_Agent{
 		ObjectMapper mapper = new ObjectMapper();
 
 		try{
-			File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\" + conf.getName() + ".json");
+			File json = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/config/" + conf.getName() + ".json");
 			mapper.writeValue(json, conf);
 		}
 		catch (JsonGenerationException e) {
@@ -69,7 +69,7 @@ public class SNMP_Agent{
 				loadConfig("default.json");
 				break;
 			case 2 : // Load a custom configuration file previoulsy saved
-				File confs = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\");
+				File confs = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/config/");
 				String [] filenames = confs.list();
 				if(filenames != null) {
 					System.out.println("Wich custom configuration file would you like to load?");
@@ -132,19 +132,19 @@ public class SNMP_Agent{
 		System.out.println("__________________________________________________");
 
 		Processo p1 = new Processo("p1", 1, new ArrayList<Snapshot>());
-		if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + p1.getPName() + "_" + p1.getPID() + ".json").exists() == false) p1.saveProcesso();
+		if(new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/logs/"+ p1.getPName() + "_" + p1.getPID() + ".json").exists() == false) p1.saveProcesso();
 		p1.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 10.0, 30.0));
 		p1.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 21.0, 10.0));
 		p1.saveProcesso();
 
 		Processo p2 = new Processo("p2", 2, new ArrayList<Snapshot>());
-		if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + p2.getPName() + "_" + p2.getPID() + ".json").exists() == false) p2.saveProcesso();
+		if(new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/logs/"+ p2.getPName() + "_" + p2.getPID() + ".json").exists() == false) p2.saveProcesso();
 		p2.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 19.0, 18.0));
 		p2.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 10.0, 19.0));
 		p2.saveProcesso();
 
 		Processo p3 = new Processo("p3", 3, new ArrayList<Snapshot>());
-		if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + p3.getPName() + "_" + p3.getPID() + ".json").exists() == false) p3.saveProcesso();
+		if(new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/logs/"+ p3.getPName() + "_" + p3.getPID() + ".json").exists() == false) p3.saveProcesso();
 		p3.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 9.0, 15.0));
 		p3.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 22.0, 23.0));
 		p3.saveProcesso();

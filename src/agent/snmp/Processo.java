@@ -46,7 +46,7 @@ public class Processo {
 
     public void addSnapshot(Snapshot s){
         Processo_Alarms pa = new Processo_Alarms(pname, pid, new ArrayList<>());
-        if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\alarms\\" + pname + "_" + pid + ".json").exists() == false) pa.saveProcessoAlarms();
+        if(new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/alarms/" + pname + "_" + pid + ".json").exists() == false) pa.saveProcessoAlarms();
         pa.loadProcessoAlarms(pname + "_" + pid + ".json");
 
         if(s.getCPU() >= 20){
@@ -66,7 +66,7 @@ public class Processo {
         ObjectMapper mapper = new ObjectMapper();
 
         try{
-            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + pname + "_" + pid + ".json");
+            File json = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/logs/" + pname + "_" + pid + ".json");
             Processo p = new Processo(pname, pid, usages);
             mapper.writeValue(json, p);
         }
@@ -85,7 +85,7 @@ public class Processo {
         ObjectMapper mapper = new ObjectMapper();
 
         try{
-            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + filename);
+            File json = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/logs/" + filename);
             Processo p = mapper.readValue(json, Processo.class);
             pname = p.getPName();
             pid = p.getPID();

@@ -34,7 +34,7 @@ public class Queries {
     public void topNCPU(int n, LocalDateTime begin, LocalDateTime end){
         Entry [] entries_aux = new Entry[n];
         try {
-            File confs = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\");
+            File confs = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/logs/");
             String [] filenames = confs.list();
             if(filenames.length < n) n = filenames.length;
             if(filenames.length > 0) {
@@ -63,7 +63,7 @@ public class Queries {
     public void topNMEM(int n, LocalDateTime begin, LocalDateTime end){
         Entry [] entries_aux = new Entry[n];
         try {
-            File confs = new File("../../../data/logs/");
+            File confs = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/logs/");
             String[] filenames = confs.list();
             if(filenames.length < n) n = filenames.length;
             if(filenames.length > 0) {

@@ -4,6 +4,6 @@
 	"mask" : "255.255.255.0",
 	"port": 80,
 	"snmpVersion": "3",
-	"commString" :  "SR2020",
-	"polling" : 5
+	"commString" :  "gr2020",
+	"polling" : 1
 }
