@@ -1,8 +1,11 @@
 package agent.snmp;
 
+import agent.alarms.*;
+
 import java.io.File;
 import java.io.IOException;
 
+import agent.alarms.Processo_Alarms;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -25,9 +28,7 @@ public class Processo {
     public Processo(String new_name, int new_id, ArrayList<Snapshot> new_usages){
         pname = new_name;
         pid = new_id;
-        usages = new ArrayList<>();
-
-        usages.addAll(new_usages);
+        usages = new ArrayList<>(new_usages);
     }
 
     public String getPName(){
@@ -39,11 +40,25 @@ public class Processo {
     }
 
     public ArrayList<Snapshot> getUsages(){
-        return new ArrayList<>(usages);
+        return new ArrayList<Snapshot>(usages);
 
     }
 
     public void addSnapshot(Snapshot s){
+        Processo_Alarms pa = new Processo_Alarms(pname, pid, new ArrayList<>());
+        if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\alarms\\" + pname + "_" + pid + ".json").exists() == false) pa.saveProcessoAlarms();
+        pa.loadProcessoAlarms(pname + "_" + pid + ".json");
+
+        if(s.getCPU() >= 20){
+            Alarm a = new Alarm("CPU overload", s.getTimestamp());
+            pa.addAlarm(a);
+            pa.saveProcessoAlarms();
+        }
+        if(s.getMEM() >= 20){
+            Alarm a = new Alarm("MEM overload", s.getTimestamp());
+            pa.addAlarm(a);
+            pa.saveProcessoAlarms();
+        }
         usages.add(s);
     }
 
@@ -51,7 +66,7 @@ public class Processo {
         ObjectMapper mapper = new ObjectMapper();
 
         try{
-            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + pname + ".json");
+            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + pname + "_" + pid + ".json");
             Processo p = new Processo(pname, pid, usages);
             mapper.writeValue(json, p);
         }
@@ -66,15 +81,15 @@ public class Processo {
         }
     }
 
-    public void loadProcesso(String processo_name){
+    public void loadProcesso(String filename){
         ObjectMapper mapper = new ObjectMapper();
 
         try{
-            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + processo_name + ".json");
+            File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + filename);
             Processo p = mapper.readValue(json, Processo.class);
             pname = p.getPName();
             pid = p.getPID();
-            usages = new ArrayList<Snapshot>(usages);
+            usages = new ArrayList<Snapshot>(p.getUsages());
         }
         catch (JsonGenerationException ge) {
             ge.printStackTrace();

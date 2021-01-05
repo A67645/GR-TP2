@@ -1,7 +1,5 @@
 package agent.visual;
 
-import java.time.LocalDateTime;
-
 public class Entry {
     private String pname;
     private int pid;
@@ -59,6 +57,10 @@ public class Entry {
 
     public void setMEM(double new_mem){
         mem = new_mem;
+    }
+
+    public String toString(){
+        return "Process Name = " + pname + "\nPID = " + pid + "\nCPU usage = " + cpu + "\nMemory Usage = " + mem;
     }
 
 }

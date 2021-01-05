@@ -1,5 +1,7 @@
 package agent.snmp;
 
+import agent.visual.*;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -7,7 +9,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+
 import java.util.Scanner;
+
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 
@@ -25,17 +30,16 @@ public class SNMP_Agent{
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
-			File json = new File(config_filename);
+			File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\" + config_filename);
 			conf = mapper.readValue(json, Config.class);
-		} catch (JsonGenerationException ge) {
-			ge.printStackTrace();
-		} catch (JsonMappingException me) {
-			me.printStackTrace();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
-
 	public void saveConfig(){
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -43,14 +47,14 @@ public class SNMP_Agent{
 			File json = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\" + conf.getName() + ".json");
 			mapper.writeValue(json, conf);
 		}
-		catch (JsonGenerationException ge) {
-			ge.printStackTrace();
+		catch (JsonGenerationException e) {
+			e.printStackTrace();
 		}
-		catch (JsonMappingException me) {
-			me.printStackTrace();
+		catch (JsonMappingException e) {
+			e.printStackTrace();
 		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -62,7 +66,7 @@ public class SNMP_Agent{
 		int config_opt = config_scanner.nextInt();
 		switch (config_opt) {
 			case 1 : // Load default configuration file
-				loadConfig("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\default.json");
+				loadConfig("default.json");
 				break;
 			case 2 : // Load a custom configuration file previoulsy saved
 				File confs = new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\");
@@ -75,8 +79,7 @@ public class SNMP_Agent{
 						System.out.println(i + " -> " + file);
 					}
 					int filenumber = config_scanner.nextInt();
-					String custom_file = filenames[filenumber - 1];
-					String filename = "C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\config\\" + custom_file;
+					String filename = filenames[filenumber - 1];
 					loadConfig(filename);
 				}
 				break;
@@ -89,6 +92,10 @@ public class SNMP_Agent{
 				String new_mask = config_scanner.next();
 				System.out.println("What is your port?\n");
 				int new_port = config_scanner.nextInt();
+				System.out.println("What is your desired SNMP version?");
+				String new_snmpVersion = config_scanner.next();
+				System.out.println("What is your desired community string?");
+				String new_commString = config_scanner.next();
 				System.out.println("Would you desire slow, medium or fast polling?\n Select 1 for slow, 2 for medium or 3 for fast.");
 				int new_polling = config_scanner.nextInt();
 				int new_polling_sec;
@@ -104,7 +111,7 @@ public class SNMP_Agent{
 						break;
 				}
 
-				conf =  new Config(new_name, new_ip, new_mask, new_port, new_polling_sec);
+				conf =  new Config(new_name, new_ip, new_mask, new_port, new_snmpVersion, new_commString, new_polling_sec);
 				System.out.println("Do you whish to save this new configuration?\ny -> yes\nn -> no");
 				String opt = config_scanner.next();
 				if(opt.equals("y")){
@@ -112,21 +119,37 @@ public class SNMP_Agent{
 				}
 		}
 	}
+
 	public void start(){
 		requestConfig();
-		System.out.println(conf.getName());
-		ArrayList<Snapshot> aux = new ArrayList<>();
-		aux.add(new Snapshot(LocalDateTime.now().toString(), 10, 10));
-		aux.add(new Snapshot(LocalDateTime.now().toString(), 20, 20));
-		Processo p = new Processo("p1", 1, aux);
+		System.out.println("ip = " + conf.getIP());
+		System.out.println("mask = " + conf.getMask());
+		System.out.println("port = " + conf.getPort());
+		System.out.println("snmp version = " + conf.getSnmpVersion());
+		System.out.println("community String = " + conf.getCommString());
+		System.out.println("polling frequency (sec) = " + conf.getPolling());
 
-		System.out.println(p.getPName());
-		System.out.println(p.getPID());
-		for(Snapshot s : p.getUsages()){
-			System.out.println(s.toString());
-		}
-		p.saveProcesso();
-		p.loadProcesso(p.getPName());
-		System.out.println(p.getPName());
+		System.out.println("__________________________________________________");
+
+		Processo p1 = new Processo("p1", 1, new ArrayList<Snapshot>());
+		if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + p1.getPName() + "_" + p1.getPID() + ".json").exists() == false) p1.saveProcesso();
+		p1.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 10.0, 30.0));
+		p1.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 21.0, 10.0));
+		p1.saveProcesso();
+
+		Processo p2 = new Processo("p2", 2, new ArrayList<Snapshot>());
+		if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + p2.getPName() + "_" + p2.getPID() + ".json").exists() == false) p2.saveProcesso();
+		p2.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 19.0, 18.0));
+		p2.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 10.0, 19.0));
+		p2.saveProcesso();
+
+		Processo p3 = new Processo("p3", 3, new ArrayList<Snapshot>());
+		if(new File("C:\\Users\\thech\\Desktop\\MIEI\\GR\\GR-TP2\\data\\logs\\" + p3.getPName() + "_" + p3.getPID() + ".json").exists() == false) p3.saveProcesso();
+		p3.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 9.0, 15.0));
+		p3.addSnapshot(new Snapshot(LocalDateTime.now().toString(), 22.0, 23.0));
+		p3.saveProcesso();
+
+		Queries q = new Queries();
+		q.topNCPU(2, LocalDateTime.parse("2020-01-04T18:51:46.879"), LocalDateTime.parse("2021-12-04T18:51:46.879"));
 	}
 }

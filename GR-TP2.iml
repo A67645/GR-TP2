@@ -40,5 +40,6 @@
     <orderEntry type="library" name="org.codehaus.jackson:jackson-core-asl:1.9.13" level="project" />
     <orderEntry type="library" name="org.codehaus.jackson:jackson-mapper-asl:1.9.9" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.5.3" level="project" />
+    <orderEntry type="library" name="org.snmp4j:snmp4j:3.4.0" level="project" />
   </component>
 </module>
