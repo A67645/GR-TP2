@@ -30,7 +30,7 @@ public class SNMP_Agent{
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
-			File json = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/config/"+ config_filename);
+			File json = new File(config_filename);
 			conf = mapper.readValue(json, Config.class);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -44,7 +44,7 @@ public class SNMP_Agent{
 		ObjectMapper mapper = new ObjectMapper();
 
 		try{
-			File json = new File("/home/a67645/Área\\ de\\ Trabalho/MIEI/GR/GR-TP2/data/config/" + conf.getName() + ".json");
+			File json = new File(conf.getName() + "1" + ".json");
 			mapper.writeValue(json, conf);
 		}
 		catch (JsonGenerationException e) {
